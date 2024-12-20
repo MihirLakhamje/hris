@@ -1,10 +1,10 @@
 <x-layout>
   <x-slot:title>
-    {{$department->name}} edit - HRIS
+    Create Employee - HRIS
   </x-slot:title>
 
   <x-slot:header>
-    Edit Department
+    Create Employee
   </x-slot:header>
 
   <div class="flex space-x-2 items-center mb-4">
@@ -14,20 +14,18 @@
   </div>
 
 
-  <form method="POST" action="/departments/{{ $department->id }}">
+  <form method="POST" action="/departments/store">
     @csrf
-    @method('PATCH')
-    <x-form-layout class="grid gap-6 mb-6 grid-cols-1 md:grid-cols-2">
+    <x-form-layout>
       <div>
-        <x-form-label for="name">Department Name</x-form-label>
-        <x-form-input type="text" id="name" name="name" placeholder="John" value="{{ $department->name }}"/>
-        <x-form-error name="name"/>
+        <x-form-label for="name">Name</x-form-label>
+        <x-form-input type="text" id="name" name="name" required />
+        <x-form-error name="name" />
       </div>
       <div>
         <x-form-label for="description">Description</x-form-label>
-        <x-form-input type="text" id="description" name="description" placeholder="John" value="{{ $department->description }}"
-        />
-        <x-form-error name="description"/>
+        <x-form-input type="text" id="description" name="description" />
+        <x-form-error name="description" />
       </div>
     </x-form-layout>
     <button type="submit"

@@ -22,7 +22,8 @@ class DepartmentController extends Controller
         }
 
         return view('departments.show', [
-            'department' => $department
+            'department' => $department,
+            'employees' => $department->employees()->simplePaginate(4)
         ]);
     }
 
@@ -35,14 +36,14 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'min:3', 'unique:departments'],
-            'description' => ['required', 'string', 'max:255', 'min:3'],
+            'description' => ['max:255'],
         ]);
 
         Department::create([
             'name' => $request->name,
             'description' => $request->description,
         ]);
-        return redirect()->route('departments.index');
+        return redirect('/departments');
     }
 
     public function edit(Department $department) 
