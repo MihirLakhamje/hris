@@ -18,6 +18,7 @@ class EmployeeFactory extends Factory
     {
         return [
             'user_id' => UserFactory::new(),
+            'department_id' => DepartmentFactory::new(),
             'phone' => fake()->phoneNumber(),
             'address' => fake()->address(),
             'salary' => fake()->numberBetween(1000, 10000),

@@ -7,6 +7,12 @@
     Employees
   </x-slot:header>
 
+  <div class="flex space-x-2 items-center mb-4">
+    <a href="/employees/create"
+      class="px-3 py-2 text-sm font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      Create employee
+    </a>
+  </div>
   <x-data-table>
     <x-slot:column>
       <th scope="col" class="px-6 py-3">
@@ -32,31 +38,31 @@
       <td class="px-6 py-4"> {{ $employee->user->name }} </td>
       <td class="px-6 py-4"> {{ $employee->user->email }} </td>
       <td class="px-6 py-4 ">
-        {{ date('d-m-Y', strtotime($employee->joining_date)) }}
+      {{ date('d-m-Y', strtotime($employee->joining_date)) }}
       </td>
       <td class="px-6 py-4">
-        <div class="flex space-x-2 items-center mb-4">
-          <x-link :typeoflink="'link'" href="/employees/{{ $employee->id }}/" class="text-blue-600 dark:text-blue-500">
-            View
-          </x-link>
-          <span class="mx-1">|</span>
-          <x-link :typeoflink="'link'" href="/employees/{{ $employee->id }}/edit"
-          class="text-green-600 dark:text-green-500">
-            Edit
-          </x-link>
-          <span class="mx-1">|</span>
-          <form action="/employees/{{ $employee->id }}" method="post">
-          @csrf
-          @method('DELETE')
-            <x-link :typeoflink="'button'" onclick="return confirm('Are you sure? This action cannot be undone.')"
-              class="text-red-600 dark:text-red-500">
-              Delete
-            </x-link>
-          </form>
-        </div>
+      <div class="flex space-x-2 items-center mb-4">
+        <x-link :typeoflink="'link'" href="/employees/{{ $employee->id }}/" class="text-blue-600 dark:text-blue-500">
+        View
+        </x-link>
+        <span class="mx-1">|</span>
+        <x-link :typeoflink="'link'" href="/employees/{{ $employee->id }}/edit"
+        class="text-green-600 dark:text-green-500">
+        Edit
+        </x-link>
+        <span class="mx-1">|</span>
+        <form action="/employees/{{ $employee->id }}" method="post">
+        @csrf
+        @method('DELETE')
+        <x-link :typeoflink="'button'" onclick="return confirm('Are you sure? This action cannot be undone.')"
+          class="text-red-600 dark:text-red-500">
+          Delete
+        </x-link>
+        </form>
+      </div>
       </td>
     </tr>
-    @endforeach
+  @endforeach
   </x-data-table>
 
   <div class="mt-4">

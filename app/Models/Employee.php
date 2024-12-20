@@ -18,10 +18,19 @@ class Employee extends Model
         'photo',
         'employee_code',
         'joining_date',
-        'user_id'
+        'user_id',
+        'department_id',
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
+
+    public function generateEmployeeCode(){
+        return 'EMP' . mt_rand(100, 999).date('Y');
     }
 }
