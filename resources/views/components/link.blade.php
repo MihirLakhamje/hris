@@ -1,5 +1,5 @@
 @props([
-  'active' => false, 
+  'active' => false,
   'typeoflink' => 'nav-link'
 ])
 
@@ -9,15 +9,15 @@
     {{ $icon }}
     <span class="ms-3">{{ $slot }}</span>
   </a>
+
 @elseif($typeoflink == 'link')
-  <a {{ $attributes->merge(['class' => 'flex items-center font-medium text-black-600 dark:text-black-500 hover:underline']) }}
-  >
+  <a {{ $attributes->merge(['class' => 'flex items-center font-medium text-black-600 dark:text-black-500 hover:underline']) }}>
     {{ $icon ?? '' }}
     <span class="ms-1">{{ $slot }}</span>
   </a>
+
 @elseif($typeoflink == 'button')
-  <button {{ $attributes->merge(['class' => 'flex items-center font-medium text-black-600 dark:text-black-500 hover:underline']) }}
-  >
+  <button {{ $attributes->merge(['class' => 'flex items-center font-medium text-black-600 dark:text-black-500 hover:underline']) }}>
     {{ $icon ?? '' }}
     <span class="ms-1">{{ $slot }}</span>
   </button>

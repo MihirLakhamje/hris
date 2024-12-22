@@ -19,9 +19,9 @@ return new class extends Migration
             $table->foreignIdFor(Department::class)->constrained()->cascadeOnDelete();
             $table->string('phone');
             $table->text('address');
-            $table->decimal('salary', 10, 2);
+            $table->integer('salary');
             $table->string('photo');
-            $table->string('employee_code');
+            $table->string('employee_code')->unique();
             $table->date('joining_date');
             $table->timestamps();
         });

@@ -12,11 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->date('mark_date'); // Correct date type
+            $table->enum('status', ['present', 'absent']);
             $table->timestamps();
+        
+            $table->unique(['employee_id', 'mark_date']); // Enforce unique attendance per day
         });
+        
     }
 
     /**
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('department');
+        Schema::dropIfExists('attendances');
     }
 };

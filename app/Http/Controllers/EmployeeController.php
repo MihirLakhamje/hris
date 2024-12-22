@@ -21,7 +21,7 @@ class EmployeeController extends Controller
     {
         $users = User::doesntHave('employee')->get();
         $departments = Department::all();
-        $random = 'EMP'.mt_rand(10000, 99999).date('Y');
+        $random = 'EMP'.mt_rand(100, 999).date('dY');
         return view('employees.create', [
             'users' => $users,
             'departments' => $departments,
@@ -62,7 +62,8 @@ class EmployeeController extends Controller
         }
 
         return view('employees.show', [
-            'employee' => $employee
+            'employee' => $employee,
+            'attendances' => $employee->attendances()->simplePaginate(2)
         ]);
     }
 

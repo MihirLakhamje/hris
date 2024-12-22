@@ -33,4 +33,8 @@ class Employee extends Model
     public function generateEmployeeCode(){
         return 'EMP' . mt_rand(100, 999).date('Y');
     }
+
+    public function attendances(){
+        return $this->hasMany(Attendance::class);
+    }
 }

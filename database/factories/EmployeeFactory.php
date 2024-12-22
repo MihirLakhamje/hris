@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Department;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,8 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => UserFactory::new(),
-            'department_id' => DepartmentFactory::new(),
+            'user_id' => User::factory(),
+            'department_id' => Department::factory(),
             'phone' => fake()->phoneNumber(),
             'address' => fake()->address(),
             'salary' => fake()->numberBetween(1000, 10000),

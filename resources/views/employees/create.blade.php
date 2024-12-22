@@ -13,7 +13,6 @@
     </x-link>
   </div>
 
-
   <form method="POST" action="/employees/store">
     @csrf
     <x-form-layout class="grid gap-6 mb-6 grid-cols-1 md:grid-cols-2">
@@ -54,22 +53,22 @@
       </div>
       <div>
         <x-form-label for="phone">Phone</x-form-label>
-        <x-form-input type="text" id="phone" name="phone" required />
+        <x-form-input type="text" id="phone" name="phone" value="8104323255" required />
         <x-form-error name="phone" />
       </div>
       <div>
         <x-form-label for="salary">Salary</x-form-label>
-        <x-form-input type="text" id="salary" name="salary" required />
+        <x-form-input type="text" id="salary" name="salary" value="10000" required />
         <x-form-error name="salary" />
       </div>
       <div>
         <x-form-label for="address">Address</x-form-label>
-        <x-form-input type="text" id="address" name="address" required />
+        <x-form-input type="text" id="address" name="address" value="Kathmandu" required />
         <x-form-error name="address" />
       </div>
       <div>
         <x-form-label for="photo">photo</x-form-label>
-        <x-form-input type="text" id="photo" name="photo" required />
+        <x-form-input type="text" id="photo" name="photo" value="sun.png" required />
         <x-form-error name="photo" />
       </div>
       <div>
@@ -81,6 +80,4 @@
     <button type="submit"
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
   </form>
-
-
 </x-layout>

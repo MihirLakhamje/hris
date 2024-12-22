@@ -36,12 +36,10 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'min:3', 'unique:departments'],
-            'description' => ['max:255'],
         ]);
 
         Department::create([
             'name' => $request->name,
-            'description' => $request->description,
         ]);
         return redirect('/departments');
     }
@@ -57,7 +55,6 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'min:3', 'unique:departments'],
-            'description' => ['required', 'string', 'max:255', 'min:3'],
         ]);
         if(!$department) {
             abort(404);
@@ -65,7 +62,6 @@ class DepartmentController extends Controller
 
         $updated = $department->update([
             'name' => $request->name,
-            'description' => $request->description,
         ]);
 
         if(!$updated) {

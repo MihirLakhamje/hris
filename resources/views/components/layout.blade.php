@@ -1,4 +1,3 @@
-@props(['speedDial' => false])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -35,10 +34,10 @@
               </path>
             </svg>
           </button>
-          <a href="https://flowbite.com" class="flex ms-2 md:me-24">
+          <a href="/" class="flex ms-2 md:me-24">
             <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
             <span
-              class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite</span>
+              class="flex self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">HRIS</span>
           </a>
         </div>
         <div class="flex items-center">
@@ -142,6 +141,20 @@
               </svg>
             </x-slot:icon>
             Departments
+          </x-link>
+        </li>
+        <li>
+          <x-link href="/attendances" :active="request()->is('attendances')" title="Department management"
+            :typeoflink="'nav-link'">
+            <x-slot:icon>
+              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m11.5 11.5 2.071 1.994M4 10h5m11 0h-1.5M12 7V4M7 7V4m10 3V4m-7 13H8v-2l5.227-5.292a1.46 1.46 0 0 1 2.065 2.065L10 17Zm-5 3h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
+              </svg>
+
+            </x-slot:icon>
+            Attendances
           </x-link>
         </li>
       </ul>
