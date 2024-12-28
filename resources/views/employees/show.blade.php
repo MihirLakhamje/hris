@@ -87,7 +87,7 @@
       <td class="px-6 py-4"> {{ date('d-m-Y', strtotime($attendance->mark_date)) }} </td>
       <td class="px-6 py-4"> {{ $attendance->status }} </td>
       <td class="px-6 py-4">
-        <div class="flex space-x-2 items-center mb-4">
+        <div class="flex space-x-2 items-center">
         <x-link :typeoflink="'link'" href="/attendances/{{ $attendance->id }}/edit"
           class="text-green-600 dark:text-green-500">
           Edit

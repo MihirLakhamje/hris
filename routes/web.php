@@ -4,6 +4,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LeaveController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,4 +36,10 @@ Route::get('/attendances/{attendance}/edit', [AttendanceController::class, 'edit
 Route::patch('/attendances/{attendance}/update', [AttendanceController::class, 'update']);
 Route::delete('/attendances/{attendance}', [AttendanceController::class, 'destroy']);
 
-// Leave Requests and Approvals
+// Leaves
+Route::get('/leaves', [LeaveController::class, 'index']);
+Route::post('/leaves/{employee}/store', [LeaveController::class, 'store']);
+Route::get('/leaves/{employee}/create', [LeaveController::class, 'create']);
+Route::get('/leaves/{leave}/edit', [LeaveController::class, 'edit']);
+Route::patch('/leaves/{leave}/update', [LeaveController::class, 'update']);
+Route::delete('/leaves/{leave}', [LeaveController::class, 'destroy']);

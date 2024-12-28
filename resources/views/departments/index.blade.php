@@ -36,7 +36,7 @@
       <td class="px-6 py-4"> {{ $department->employees->count() }} </td>
       <td class="px-6 py-4"> {{ date('d-m-Y', strtotime($department->created_at)) }} </td>
       <td class="px-6 py-4">
-        <div class="flex space-x-2 items-center mb-4">
+        <div class="flex space-x-2 items-center">
           <x-link :typeoflink="'link'" href="/departments/{{ $department->id }}/" class="text-blue-600 dark:text-blue-500">
             View
           </x-link>

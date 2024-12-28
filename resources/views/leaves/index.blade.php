@@ -1,16 +1,16 @@
 <x-layout>
   <x-slot:title>
-    Employees - HRIS
+    Leave requests - HRIS
   </x-slot:title>
 
   <x-slot:header>
-    Employees
+    Employees leave requests
   </x-slot:header>
 
   <div class="flex space-x-2 items-center mb-4">
     <a href="/employees/create"
       class="px-3 py-2 text-sm font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-      Create employee
+      Request Leave
     </a>
   </div>
   <x-data-table>
@@ -19,43 +19,46 @@
         Employee Code
       </th>
       <th scope="col" class="px-6 py-3">
-        Name
+        Leave Type
       </th>
       <th scope="col" class="px-6 py-3">
-        Department
+        Start Date
       </th>
       <th scope="col" class="px-6 py-3">
-        Email
+        End Date
       </th>
       <th scope="col" class="px-6 py-3">
-        Joining Date
+        Reason
+      </th>
+      <th scope="col" class="px-6 py-3">
+        Status
       </th>
       <th scope="col" class="px-6 py-3">
         Action
       </th>
     </x-slot:column>
 
-    @foreach ($employees as $employee)
+    @foreach ($leaves as $leave)
     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-nowrap">
-      <td class="px-6 py-4"> {{ $employee->employee_code }} </td>
-      <td class="px-6 py-4"> {{ $employee->user->name }} </td>
-      <td class="px-6 py-4"> {{ $employee->department->name ?? '' }} </td>
-      <td class="px-6 py-4"> {{ $employee->user->email }} </td>
-      <td class="px-6 py-4 ">
-      {{ date('d-m-Y', strtotime($employee->joining_date)) }}
+      <td class="px-6 py-4"> {{ $leave->employee->employee_code ?? '' }} </td>
+      <td class="px-6 py-4"> {{ $leave->leave_type }} </td>
+      <td class="px-6 py-4">
+      {{ date('d-m-Y', strtotime($leave->start_date)) }}
       </td>
+      <td class="px-6 py-4 ">
+      {{ date('d-m-Y', strtotime($leave->end_date)) }}
+      </td>
+      <td class="px-6 py-4"> {{ $leave->reason }} </td>
+      <td class="px-6 py-4"> {{ $leave->status }} </td>
       <td class="px-6 py-4">
       <div class="flex space-x-2 items-center">
-        <x-link :typeoflink="'link'" href="/employees/{{ $employee->id }}/" class="text-blue-600 dark:text-blue-500">
-        View
-        </x-link>
-        <span class="mx-1">|</span>
-        <x-link :typeoflink="'link'" href="/employees/{{ $employee->id }}/edit"
+        <x-link :typeoflink="'link'" href="/leaves/{{ $leave->id }}/edit"
         class="text-green-600 dark:text-green-500">
-        Edit
+        Submit Response
         </x-link>
+
         <span class="mx-1">|</span>
-        <form action="/employees/{{ $employee->id }}" method="post">
+        <form action="/leaves/{{ $leave->id }}" method="post">
         @csrf
         @method('DELETE')
         <x-link :typeoflink="'button'" onclick="return confirm('Are you sure? This action cannot be undone.')"
@@ -70,6 +73,8 @@
   </x-data-table>
 
   <div class="mt-4">
-    {{ $employees->links('vendor.pagination.simple-tailwind') }}
+    {{ $leaves->links('vendor.pagination.simple-tailwind') }}
   </div>
+
+  
 </x-layout>
