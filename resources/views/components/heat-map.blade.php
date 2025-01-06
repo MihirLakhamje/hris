@@ -1,0 +1,48 @@
+<table>
+  <thead>
+    <tr>
+      <td>
+        <span class="sr-only">Day of week</span>
+      </td>
+      <td>
+        <span>Jan</span>
+      </td>
+      <td>
+        <span>Feb</span>
+      </td>
+      <td>
+        <span>Mar</span>
+      </td>
+      <td>
+        <span>Apr</span>
+      </td>
+      <td>
+        <span>May</span>
+      </td>
+      <td>
+        <span>Jun</span>
+      </td>
+      <td>
+        <span>Jul</span>
+      </td>
+      <td>
+        <span>Aug</span>
+      </td>
+      <td>
+        <span>Sep</span>
+      </td>
+      <td>
+        <span>Oct</span>
+      </td>
+      <td>
+        <span>Nov</span>
+      </td>
+      <td>
+        <span>Dec</span>
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>

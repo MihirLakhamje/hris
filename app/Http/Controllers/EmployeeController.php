@@ -63,7 +63,6 @@ class EmployeeController extends Controller
 
         return view('employees.show', [
             'employee' => $employee,
-            'attendances' => $employee->attendances()->simplePaginate(2)
         ]);
     }
 

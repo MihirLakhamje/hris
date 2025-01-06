@@ -31,6 +31,9 @@
         Reason
       </th>
       <th scope="col" class="px-6 py-3">
+        No. of days
+      </th>
+      <th scope="col" class="px-6 py-3">
         Status
       </th>
       <th scope="col" class="px-6 py-3">
@@ -49,6 +52,7 @@
       {{ date('d-m-Y', strtotime($leave->end_date)) }}
       </td>
       <td class="px-6 py-4"> {{ $leave->reason }} </td>
+      <td class="px-6 py-4"> {{ $leave->number_of_days }} </td>
       <td class="px-6 py-4"> {{ $leave->status }} </td>
       <td class="px-6 py-4">
       <div class="flex space-x-2 items-center">

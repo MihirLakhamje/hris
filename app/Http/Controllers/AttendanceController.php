@@ -14,7 +14,9 @@ class AttendanceController extends Controller
 {
     public function index() 
     {
-        return view('attendances.index');
+        return view('attendances.index', [
+            'attendances' => Attendance::latest()->simplePaginate(8)
+        ]);
     }
     public function create(Employee $employee)
     {
@@ -58,6 +60,13 @@ class AttendanceController extends Controller
             return redirect('/attendances/' . $employee->id . '/create')->with('error', 'An error occurred while marking attendance.');
         }
 
+    }
+
+    public function show(Employee $employee)
+    {
+        return view('attendances.show', [
+            'attendances' => $employee->attendances()->latest()->simplePaginate(8),
+        ]);
     }
 
     public function edit(Attendance $attendance)

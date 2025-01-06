@@ -31,7 +31,7 @@
       <h2 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
         {{ $department->name }}
       </h2>
-      <x-data-table>
+      <x-data-table >
         <x-slot:column>
           <th scope="col" class="px-6 py-3">
             Employee Code

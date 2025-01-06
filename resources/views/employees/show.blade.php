@@ -69,54 +69,6 @@
   </section>
   <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
   <section>
-    <x-data-table>
-      <x-slot:column>
-        <th scope="col" class="px-6 py-3">
-          Date
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Status
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Action
-        </th>
-      </x-slot:column>
-
-      @foreach ($attendances as $attendance)
-      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-nowrap">
-      <td class="px-6 py-4"> {{ date('d-m-Y', strtotime($attendance->mark_date)) }} </td>
-      <td class="px-6 py-4"> {{ $attendance->status }} </td>
-      <td class="px-6 py-4">
-        <div class="flex space-x-2 items-center">
-        <x-link :typeoflink="'link'" href="/attendances/{{ $attendance->id }}/edit"
-          class="text-green-600 dark:text-green-500">
-          Edit
-        </x-link>
-        <span class="mx-1">|</span>
-        <form action="/attendances/{{ $attendance->id }}" method="post">
-          @csrf
-          @method('DELETE')
-          <x-link :typeoflink="'button'" onclick="return confirm('Are you sure? This action cannot be undone.')"
-          class="text-red-600 dark:text-red-500">
-          Delete
-          </x-link>
-        </form>
-        </div>
-      </td>
-      </tr>
-    @endforeach
-    </x-data-table>
-    <div class="mt-4">
-      {{ $attendances->links() }}
-    </div>
-    @if (session()->has('success'))
-      <x-toast :variant="'green'">
-        {{ session('success') }}
-      </x-toast>
-    @elseif (session()->has('error'))
-    <x-toast :variant="'red'">
-      {{ session('error') }}
-    </x-toast>
-    @endif
+    
   </section>
 </x-layout>

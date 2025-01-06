@@ -1,39 +1,32 @@
 <x-layout>
   <x-slot:title>
-    Attendance stats - HRIS
+    attendance details - HRIS
   </x-slot:title>
 
   <x-slot:header>
-    Attendance stats
+    Attendance details
   </x-slot:header>
-
-  <div class="flex space-x-2 items-center mb-4">
-    <x-link :typeoflink="'link'" href="/employees" class="text-blue-600 dark:text-blue-500">
-      Back
-    </x-link>
-  </div>
 
   <x-data-table>
       <x-slot:column>
-        <th scope="col" class="px-6 py-3">
-          Employee Code
-        </th>
         <th scope="col" class="px-6 py-3">
           Date
         </th>
         <th scope="col" class="px-6 py-3">
           Status
         </th>
+        @can('role-admin')
         <th scope="col" class="px-6 py-3">
           Action
         </th>
+        @endcan
       </x-slot:column>
 
       @foreach ($attendances as $attendance)
       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-nowrap">
-      <td class="px-6 py-4"> {{ $attendance->employee->employee_code ?? '' }} </td>
       <td class="px-6 py-4"> {{ date('d-m-Y', strtotime($attendance->mark_date)) }} </td>
       <td class="px-6 py-4"> {{ $attendance->status }} </td>
+      @can('role-admin')
       <td class="px-6 py-4">
         <div class="flex space-x-2 items-center">
         <x-link :typeoflink="'link'" href="/attendances/{{ $attendance->id }}/edit"
@@ -51,11 +44,20 @@
         </form>
         </div>
       </td>
+      @endcan
       </tr>
     @endforeach
     </x-data-table>
     <div class="mt-4">
       {{ $attendances->links() }}
     </div>
-
+    @if (session()->has('success'))
+      <x-toast :variant="'green'">
+        {{ session('success') }}
+      </x-toast>
+    @elseif (session()->has('error'))
+    <x-toast :variant="'red'">
+      {{ session('error') }}
+    </x-toast>
+    @endif
 </x-layout>

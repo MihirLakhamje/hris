@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Leave;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class LeaveController extends Controller
@@ -52,8 +53,12 @@ class LeaveController extends Controller
 
     $starting_date = Carbon::parse($request->start_date);
     $ending_date = Carbon::parse($request->end_date);
+
+    $starting_date->format('d-m-Y');
+    $ending_date->format('d-m-Y');
     
-    $days = $starting_date->diffInDays($ending_date);
+    $days = (int) $starting_date->diffInDays($ending_date) + 1;
+    // dd($request->all(), $days);
 
     if($starting_date == $ending_date) {
       $days++;
@@ -73,18 +78,18 @@ class LeaveController extends Controller
       'number_of_days' => $days
     ]);
 
-    return redirect('/leaves')->with('success', 'Leave applied successfully.');
+    if(Gate::authorize('role-admin')) {
+      return redirect('/leaves')->with('success', 'Leave applied successfully.');
+    }
+    return redirect('/leaves/' . $employee->id)->with('success', 'Leave applied successfully.');
 
   }
 
-  public function show(Leave $leave)
+  public function show(Employee $employee)
   {
-    if (!$leave) {
-      abort(404);
-    }
     return view('leaves.show', [
-      'leave' => $leave,
-      'employee' => $leave->employee
+      'leaves' => $employee->leaves()->latest()->simplePaginate(8),
+      'employee' => $employee
     ]);
   }
 

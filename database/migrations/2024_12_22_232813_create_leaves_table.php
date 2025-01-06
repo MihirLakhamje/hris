@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('leave_type', ['annual', 'sick', 'maternity', 'paternity']);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('reason');
-            $table->integer('number_of_days')->default(0);
+            $table->integer('number_of_days');
             $table->timestamps();
         });
     }

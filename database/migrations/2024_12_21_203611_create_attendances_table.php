@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->date('mark_date'); // Correct date type
-            $table->enum('status', ['present', 'absent']);
+            $table->enum('status', ['present', 'absent', 'unmarked'])->default('unmarked');
             $table->timestamps();
         
             $table->unique(['employee_id', 'mark_date']); // Enforce unique attendance per day
