@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
 
@@ -81,6 +82,31 @@ Route::middleware(['auth'])->group(function () {
         
         Route::delete('/{leave}', [LeaveController::class, 'destroy'])
         ->can('delete-leave', 'leave');
+    });
+
+
+    // Payrolls
+    Route::prefix('payrolls')->group(function () {
+        Route::get('/', [PayrollController::class, 'index'])
+        ->can('role-admin');
+        
+        Route::get('/create', [PayrollController::class, 'create'])
+        ->can('role-admin');
+
+        Route::post('/store', [PayrollController::class, 'store'])
+        ->can('role-admin');
+        
+        Route::get('/{employee}', [PayrollController::class, 'show'])
+        ->can('role-employee', 'employee');
+        
+        Route::get('/{payroll}/edit', [PayrollController::class, 'edit'])
+        ->can('role-admin');
+        
+        Route::patch('/{payroll}/store', [PayrollController::class, 'update'])
+        ->can('role-admin');
+        
+        Route::delete('/{payroll}', [PayrollController::class, 'destroy'])
+        ->can('role-admin');
     });
     
     Route::post('/logout', [SessionController::class, 'destroy']);
