@@ -61,6 +61,7 @@
         Submit Response
         </x-link>
 
+        @can('delete-leave', $leave)
         <span class="mx-1">|</span>
         <form action="/leaves/{{ $leave->id }}" method="post">
         @csrf
@@ -70,6 +71,7 @@
           Delete
         </x-link>
         </form>
+        @endcan
       </div>
       </td>
     </tr>

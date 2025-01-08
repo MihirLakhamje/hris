@@ -1,18 +1,16 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
-use Illuminate\Support\Facades\Gate;
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
+    Route::get('/', [DashboardController::class, 'index']);
 
     // Employees
     Route::prefix('employees')->group(function () {
@@ -60,52 +58,29 @@ Route::middleware(['auth'])->group(function () {
             ->can('role-admin');
     });
 
-    // Attendances
-    Route::prefix('attendances')->group(function (){
-        Route::get('/', [AttendanceController::class, 'index'])
-        ->can('role-admin');
-        
-        Route::post('/{employee}/store', [AttendanceController::class, 'store'])
-        ->can('role-admin');
-
-        Route::get('/{employee}/create', [AttendanceController::class, 'create'])
-        ->can('role-admin');
-
-        Route::get('/{employee}', [AttendanceController::class, 'show'])
-        ->can('role-employee', 'employee');
-        
-        Route::get('/{attendance}/edit', [AttendanceController::class, 'edit'])
-        ->can('role-admin');
-        
-        Route::patch('/{attendance}/update', [AttendanceController::class, 'update'])
-        ->can('role-admin');
-        
-        Route::delete('/{attendance}', [AttendanceController::class, 'destroy'])
-        ->can('role-admin');
-    });
 
     // Leaves
     Route::prefix('leaves')->group(function (){
         Route::get('/', [LeaveController::class, 'index'])
         ->can('role-admin');
         
-        Route::post('/{employee}/store', [LeaveController::class, 'store'])
-        ->can('employee-ownership', 'employee');
-        
         Route::get('/{employee}/create', [LeaveController::class, 'create'])
+        ->can('employee-ownership', 'employee');
+
+        Route::post('/{employee}/store', [LeaveController::class, 'store'])
         ->can('employee-ownership', 'employee');
         
         Route::get('/{employee}', [LeaveController::class, 'show'])
         ->can('role-employee', 'employee');
         
         Route::get('/{leave}/edit', [LeaveController::class, 'edit'])
-        ->can('employee-ownership', 'employee');
+        ->can('role-admin');
         
         Route::patch('/{leave}/update', [LeaveController::class, 'update'])
-        ->can('employee-ownership', 'employee');
+        ->can('role-admin');
         
         Route::delete('/{leave}', [LeaveController::class, 'destroy'])
-        ->can('employee-ownership', 'employee');
+        ->can('delete-leave', 'leave');
     });
     
     Route::post('/logout', [SessionController::class, 'destroy']);

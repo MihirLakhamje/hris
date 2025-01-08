@@ -27,6 +27,7 @@ class LeaveController extends Controller
     if (!$employee) {
       abort(404);
     }
+    Gate::authorize('employee-ownership', $employee);
     return view('leaves.create', [
       'employee' => $employee,
       'today' => $today
@@ -35,14 +36,16 @@ class LeaveController extends Controller
 
   public function store(Request $request, Employee $employee)
   {
+    $leave_limit = 20;
+    $no_of_leaves = $employee->leaves()->sum('number_of_days');
     $validation = Validator::make($request->all(), [
       'start_date' => 'required',
       'end_date' => 'required',
       'leave_type' => 'required',
-      'reason' => 'required',      
+      'reason' => 'required',
     ]);
 
-  
+
     if ($validation->fails()) {
       return redirect('/leaves/' . $employee->id . '/create')->with('error', 'All fields are required.');
     }
@@ -56,18 +59,17 @@ class LeaveController extends Controller
 
     $starting_date->format('d-m-Y');
     $ending_date->format('d-m-Y');
-    
+
     $days = (int) $starting_date->diffInDays($ending_date) + 1;
-    // dd($request->all(), $days);
-
-    if($starting_date == $ending_date) {
-      $days++;
+    if($starting_date->equalTo($ending_date)){
+      $days = 1;
     }
+    // dd($starting_date, $ending_date, $days);
 
-    if ($starting_date->diffInDays($ending_date) > 30) {
-      return redirect('/leaves/' . $employee->id . '/create')->with('error', 'Leave duration cannot be more than 30 days.');
+    if (($no_of_leaves + $days) > $leave_limit) {
+      return redirect('/leaves/' . $employee->id . '/create')
+        ->with('error', 'Leave request exceeds the allowed limit of 20 days.');
     }
-
 
     Leave::create([
       'employee_id' => $employee->id,
@@ -78,7 +80,9 @@ class LeaveController extends Controller
       'number_of_days' => $days
     ]);
 
-    if(Gate::authorize('role-admin')) {
+    Gate::authorize('employee-ownership', $employee);
+
+    if (Gate::check('role-admin')) {
       return redirect('/leaves')->with('success', 'Leave applied successfully.');
     }
     return redirect('/leaves/' . $employee->id)->with('success', 'Leave applied successfully.');
@@ -116,6 +120,7 @@ class LeaveController extends Controller
   public function destroy(Leave $leave)
   {
     $leave->delete();
-    return redirect('/leaves');
+
+    return redirect()->back();
   }
 }
