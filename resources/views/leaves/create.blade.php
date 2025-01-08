@@ -1,10 +1,10 @@
 <x-layout>
   <x-slot:title>
-    Create Employee - HRIS
+    Create Leave Request - HRIS
   </x-slot:title>
 
   <x-slot:header>
-    Create Employee
+    Create Leave Request
   </x-slot:header>
 
   <div class="flex space-x-2 items-center mb-4">

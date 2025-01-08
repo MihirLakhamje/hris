@@ -26,8 +26,8 @@ class AuthServiceProvider extends ServiceProvider
             return $user->role === 'admin';
         });
 
-        Gate::define('role-employee', function ( $user, $employee) {
-            if(!$employee instanceof Employee){
+        Gate::define('role-employee', function (User $user,  $employee) {
+            if(!$employee) {
                 return false;
             }
             return $user->id === $employee->user_id;

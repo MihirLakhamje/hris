@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
