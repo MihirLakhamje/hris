@@ -67,33 +67,34 @@
       </div>
       <p class="font-normal text-gray-500 dark:text-gray-400">Payroll amount</p>
     </div>
+  </div>
 
+  <div class="mt-4">
+    <x-data-table>
+      <x-slot:column>
+        <th scope="col" class="px-6 py-3">
+          Name
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Email
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Creation Date
+        </th>
+      </x-slot:column>
+
+      @foreach ($users as $user)
+      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-nowrap">
+        <td class="px-6 py-4"> {{ ucfirst($user->name)}} </td>
+        <td class="px-6 py-4"> {{ $user->email }} </td>
+        <td class="px-6 py-4"> {{ date('d-m-Y', strtotime($user->created_at)) }} </td>
+      </tr>
+      @endforeach
+    </x-data-table>
     <div class="mt-4">
-      <x-data-table>
-        <x-slot:column>
-          <th scope="col" class="px-6 py-3">
-            Name
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Email
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Creation Date
-          </th>
-        </x-slot:column>
-
-        @foreach ($users as $user)
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-nowrap">
-          <td class="px-6 py-4"> {{ ucfirst($user->name)}} </td>
-          <td class="px-6 py-4"> {{ $user->email }} </td>
-          <td class="px-6 py-4"> {{ date('d-m-Y', strtotime($user->created_at)) }} </td>
-        </tr>
-        @endforeach
-      </x-data-table>
-      <div class="mt-4">
-        {{ $users->links('vendor.pagination.simple-tailwind') }}
-      </div>
+      {{ $users->links('vendor.pagination.simple-tailwind') }}
     </div>
   </div>
+  
   @endcan
 </x-layout>

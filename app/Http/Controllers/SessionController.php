@@ -29,7 +29,7 @@ class SessionController extends Controller
 
         if (!Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
-                'email' => 'Your provided credentials could not be verified.',
+                'email' => 'Invalid credentials',
             ]);
         }
 
