@@ -8,9 +8,19 @@ use App\Models\Leave;
 use App\Models\Payroll;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
+    public function index(){
+        if(Auth::check()){
+            if(Gate::allows('role-admin')){
+                return redirect('/dashboards/admin');
+            }
+            return redirect('/dashboards/employee');
+        }
+        return view('welcome');
+    }
     public function admin()
     {
         $no_of_employees = Employee::count();

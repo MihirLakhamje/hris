@@ -13,10 +13,9 @@ use App\Models\Employee;
 use App\Models\Leave;
 use App\Models\Payroll;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+
+Route::get('/', [DashboardController::class, 'index']);
 // Auth
 Route::get('/register', [RegisteredUserController::class, 'create']);
 Route::post('/register', [RegisteredUserController::class, 'store']);

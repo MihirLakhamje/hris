@@ -11,6 +11,12 @@ class SessionController extends Controller
 {
     public function create()
     {
+        if(Auth::check()){
+            if(Gate::allows('role-admin')){
+                return redirect('/dashboards/admin');
+            }
+            return redirect('/dashboards/employee');
+        }
         return view('auth.login');
     }
 
