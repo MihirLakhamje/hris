@@ -9,11 +9,20 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::with('user')->simplePaginate(8);
+        $searchEmployee = $request->query('search');
+        $employeesQuery = Employee::with('user');
+        if($searchEmployee) {
+            $employees = $employeesQuery->whereHas('user', 
+            function($query) use ($searchEmployee){
+                $query->where('name', 'like', "%$searchEmployee%");
+            })->simplePaginate(8);
+        }
+        $employees = $employeesQuery->simplePaginate(8);
         return view('employees.index', [
-            'employees' => $employees
+            'employees' => $employees,
+            'search' => $searchEmployee
         ]);
     }
 
@@ -42,6 +51,8 @@ class EmployeeController extends Controller
             'photo' => ['required', 'string', 'max:255'],
         ]);
 
+        $user = User::findorFail($request->user_id);
+
         Employee::create([
             'user_id' => $request->user_id,
             'department_id' => $request->department_id,
@@ -52,7 +63,10 @@ class EmployeeController extends Controller
             'phone' => $request->phone,
             'photo' => $request->photo,
         ]);
-        return redirect("/employees");
+        
+        $user->role = 'employee';
+        $user->save();
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully');
     }
 
     public function show(Employee $employee)

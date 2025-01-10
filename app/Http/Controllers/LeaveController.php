@@ -6,53 +6,40 @@ use App\Models\Employee;
 use App\Models\Leave;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
 
 class LeaveController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
-    $leaves = Leave::with('employee')->simplePaginate(8);
-    // dd($leaves[0]);
+
+    $leaves = Leave::latest()->simplePaginate(7);
+
     return view('leaves.index', [
       'leaves' => $leaves,
     ]);
   }
 
-  public function create(Request $request, Employee $employee)
+  public function create(Request $request)
   {
     $today = Carbon::now()->format('d-m-Y');
-    // dd($employee->id);
+    $employee = Auth::user()->employee;
     if (!$employee) {
       abort(404);
     }
-    Gate::authorize('employee-ownership', $employee);
     return view('leaves.create', [
       'employee' => $employee,
       'today' => $today
     ]);
   }
 
-  public function store(Request $request, Employee $employee)
+  public function store(Request $request)
   {
     $leave_limit = 20;
-    $no_of_leaves = $employee->leaves()->sum('number_of_days');
-    $validation = Validator::make($request->all(), [
-      'start_date' => 'required',
-      'end_date' => 'required',
-      'leave_type' => 'required',
-      'reason' => 'required',
-    ]);
+    $employee = Auth::user()->employee;
+    $currentMonth = Carbon::now()->month;
 
-
-    if ($validation->fails()) {
-      return redirect('/leaves/' . $employee->id . '/create')->with('error', 'All fields are required.');
-    }
-
-    if (Carbon::parse($request->start_date)->gt(Carbon::parse($request->end_date))) {
-      return redirect('/leaves/' . $employee->id . '/create')->with('error', 'Start date cannot be greater than end date.');
-    }
 
     $starting_date = Carbon::parse($request->start_date);
     $ending_date = Carbon::parse($request->end_date);
@@ -61,13 +48,39 @@ class LeaveController extends Controller
     $ending_date->format('d-m-Y');
 
     $days = (int) $starting_date->diffInDays($ending_date) + 1;
-    if($starting_date->equalTo($ending_date)){
+
+    // Sum the number of leave days taken in the current month
+    $no_of_leaves = $employee->leaves()
+      ->whereMonth('start_date', $currentMonth)
+      ->sum('number_of_days');
+
+    $request->validate( [
+      'start_date' => [
+        'required',
+        'date'
+      ],
+      'end_date' => [
+        'required',
+        'date'
+      ],
+      'leave_type' => 'required',
+      'reason' => 'required',
+    ]);
+
+    if (Carbon::parse($request->start_date)->gt(Carbon::parse($request->end_date))) {
+      return redirect('/leaves/create')->with('error', 'Start date cannot be greater than end date.');
+    }
+
+    if(($starting_date->month != $currentMonth) || ($ending_date->month != $currentMonth)){ 
+      return redirect('/leaves/create')->with('error', 'You can only apply for leave in the current month.');
+    }
+
+    if ($starting_date->equalTo($ending_date)) {
       $days = 1;
     }
-    // dd($starting_date, $ending_date, $days);
 
     if (($no_of_leaves + $days) > $leave_limit) {
-      return redirect('/leaves/' . $employee->id . '/create')
+      return redirect('/leaves/create')
         ->with('error', 'Leave request exceeds the allowed limit of 20 days.');
     }
 
@@ -80,7 +93,6 @@ class LeaveController extends Controller
       'number_of_days' => $days
     ]);
 
-    Gate::authorize('employee-ownership', $employee);
 
     if (Gate::check('role-admin')) {
       return redirect('/leaves')->with('success', 'Leave applied successfully.');
@@ -104,7 +116,6 @@ class LeaveController extends Controller
 
   public function update(Request $request, Leave $leave)
   {
-    // dd($request->all());
     $request->validate([
       'status' => 'required',
     ]);

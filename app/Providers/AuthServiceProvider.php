@@ -2,8 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Leave;
 use App\Models\User;
+use App\Policies\DepartmentPolicy;
+use App\Policies\EmployeePolicy;
+use App\Policies\LeavePolicy;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,25 +28,20 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('role-admin', function (User $user) {
-            return $user->role === 'admin';
+        Gate::policy(Employee::class, EmployeePolicy::class);
+        Gate::policy(Department::class, DepartmentPolicy::class);
+        Gate::policy(Leave::class, LeavePolicy::class);
+        Gate::define('role-admin', function (User $user): bool {
+            return $user->hasRole('admin');
         });
-
-        Gate::define('role-employee', function (User $user,  $employee) {
-            if(!$employee) {
-                return false;
-            }
-            return $user->id === $employee->user_id;
+        Gate::define('role-employee', function (User $user): bool {
+            return $user->hasRole('employee');
         });
-
-        Gate::define('employee-ownership', function ( $user,  $employee) {
-            return $user->id === $employee->user_id || $user->hasRole('admin');
+        Gate::define('guest', function (User $user): bool {
+            return $user->hasRole('guest');
         });
-
-
-        Gate::define('delete-leave', function ($user, $leave) {
-            // Allow if the user is the employee who owns the leave or is an admin
-            return $user->id === $leave->employee->user_id;
+        Gate::define('user-employee', function (User $user): bool {
+            return $user->hasRole('employee') || $user->hasRole('guest');
         });
     }
 }

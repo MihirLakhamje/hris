@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
@@ -28,8 +29,10 @@ class SessionController extends Controller
 
         $request->session()->regenerate();
 
-
-        return redirect('/');
+        if(Gate::allows('role-admin')){ 
+            return redirect('/dashboards/admin');
+        }
+        return redirect('/dashboards/employee');
     }
 
     public function destroy()

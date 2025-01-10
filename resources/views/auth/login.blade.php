@@ -24,6 +24,5 @@
         <x-link href="/register" :typeoflink="'link'">Register</x-link>
       </div>
     </x-auth-form>
-
   </form>
 </x-layout>

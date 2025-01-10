@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class RegisteredUserController extends Controller
 {
@@ -23,7 +24,6 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            // 'role' => 'admin'
         ]);
 
         Auth::login($user);
@@ -32,6 +32,9 @@ class RegisteredUserController extends Controller
             return redirect('/login');
         }
 
-        return redirect('/');
+        if(Gate::allows('role-admin')){ 
+            return redirect('/dashboards/admin');
+        }
+        return redirect('/dashboards/employee');
     }
 }
