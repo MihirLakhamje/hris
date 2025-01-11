@@ -13,7 +13,7 @@
   "env": {
       "APP_ENV": "production",
       "APP_DEBUG": "false",
-      "APP_URL": "https://hris.vercel.app",
+      "APP_URL": "https://hris-mihir.vercel.app",
       "APP_KEY": "base64:j+7fKPTVSlYmBZmhhL7i5JDHUqfqT+w54AZcPrNpgMw=",
 
       "APP_CONFIG_CACHE": "/tmp/config.php",
