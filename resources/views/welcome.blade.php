@@ -1,3 +1,4 @@
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 <x-layout>
   <x-slot:title>Welcome to HRIS</x-slot:title>
 
