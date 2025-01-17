@@ -14,15 +14,18 @@ use App\Models\Leave;
 use App\Models\Payroll;
 
 
+Route::middleware(['throttle:web'])->group(function () {
+	// Auth
+	Route::get('/', [DashboardController::class, 'index']);
+	Route::get('/register', [RegisteredUserController::class, 'create']);
+	Route::post('/register', [RegisteredUserController::class, 'store']);
+	Route::get('/login', [SessionController::class, 'create'])->name('login');
+	Route::post('/login', [SessionController::class, 'store']);
 
-Route::get('/', [DashboardController::class, 'index']);
-// Auth
-Route::get('/register', [RegisteredUserController::class, 'create']);
-Route::post('/register', [RegisteredUserController::class, 'store']);
-Route::get('/login', [SessionController::class, 'create'])->name('login');
-Route::post('/login', [SessionController::class, 'store']);
 
-Route::middleware(['auth'])->group(function () {
+});
+
+Route::middleware(['auth', 'throttle:web'])->group(function () {
 
     // Dashboard
     Route::prefix('dashboards')->group(function () {
