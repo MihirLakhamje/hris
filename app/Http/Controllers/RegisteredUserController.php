@@ -30,6 +30,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
+		// 'role' => 'admin'
         ]);
 
         Auth::login($user);

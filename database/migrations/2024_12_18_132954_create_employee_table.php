@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('phone');
             $table->text('address');
             $table->integer('salary');
-            $table->string('photo');
             $table->string('employee_code')->unique();
             $table->date('joining_date');
             $table->timestamps();

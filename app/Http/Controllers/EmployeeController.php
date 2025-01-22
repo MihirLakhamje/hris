@@ -6,6 +6,8 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Exception;
+use Carbon\Carbon;
 
 class EmployeeController extends Controller
 {
@@ -40,33 +42,37 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {   
+	try{
+	$joiningDate = Carbon::parse($request->joining_date)->format('Y-m-d');
         $request->validate([
             'user_id' => ['required', 'integer'],
             'department_id' => ['required', 'integer'],
             'address' => ['required', 'string', 'max:255'],
             'employee_code' => ['required', 'string', 'max:255', 'min:3'],
-            'joining_date' => ['required', 'string'],
+            'joining_date' => ['required', 'date'],
             'salary' => ['required', 'numeric'],
             'phone' => ['required', 'string', 'max:255'],
-            'photo' => ['required', 'string', 'max:255'],
         ]);
 
-        $user = User::findorFail($request->user_id);
+        $user = User::find($request->user_id);
 
         Employee::create([
             'user_id' => $request->user_id,
             'department_id' => $request->department_id,
             'address' => $request->address,
             'employee_code' => $request->employee_code,
-            'joining_date' => $request->joining_date,
+            'joining_date' => $joiningDate,
             'salary' => $request->salary,
             'phone' => $request->phone,
-            'photo' => $request->photo,
+           
         ]);
         
         $user->role = 'employee';
         $user->save();
         return redirect()->route('employees.index')->with('success', 'Employee created successfully');
+	}catch(Exception $e){
+		dd($e->getMessage());
+	}
     }
 
     public function show(Employee $employee)

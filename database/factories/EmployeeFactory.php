@@ -21,10 +21,9 @@ class EmployeeFactory extends Factory
         return [
             'user_id' => User::factory(),
             'department_id' => Department::factory(),
-            'phone' => fake()->phoneNumber(),
             'address' => fake()->address(),
             'salary' => fake()->numberBetween(1000, 10000),
-            'photo' => fake()->imageUrl(),
+            'phone' => '1234567891',
             'employee_code' => fake()->unique()->numberBetween(1000, 9999),
             'joining_date' => fake()->date(),
         ];
